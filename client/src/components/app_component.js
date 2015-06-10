@@ -1,6 +1,9 @@
 'use strict';
 
 const React = require('react/addons');
+
+const MyButton = require('components/my_button');
+
 const AST = require('services/ast');
 
 class AppComponent extends React.Component {
@@ -10,6 +13,7 @@ class AppComponent extends React.Component {
         <h1 className="header">This is Header</h1>
         <p className="body">Lorem <em>Ipsum</em> brabrabra</p>
         <a href="https://example.com" target="_blank">This is link</a>
+        <MyButton/>
         <ul>
           <li>List 1</li>
           <li>List 2</li>
@@ -25,5 +29,4 @@ class AppComponent extends React.Component {
     );
   }
 }
-
 module.exports = AppComponent;

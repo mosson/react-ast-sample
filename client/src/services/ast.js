@@ -5,6 +5,16 @@ const parser = require("services/parser");
 const _ = require('lodash');
 
 class AST {
+  static register(name, component) {
+    if( !AST.components ) AST.components = {};
+    AST.components[name] = component;
+  }
+
+  static unregister(name) {
+    if( !AST.components ) AST.components = {};
+    delete AST[name];
+  }
+
   static generate(html) {
     var source = parser.parse(html);
 
@@ -16,11 +26,15 @@ class AST {
   }
 
   static parse (node) {
+    if( !AST.components ) AST.components = {};
     if( node.type !== "tag" ) return;
 
     return React.createElement.apply(
       this,
-      [node.name, node.attribs||{}].concat(
+      [
+        AST.components[node.name] || node.name,
+        node.attribs||{}
+      ].concat(
         _.compact(_.map(node.children, (n) => {
           if( n.type === "tag" ) {
             return this.parse(n);
