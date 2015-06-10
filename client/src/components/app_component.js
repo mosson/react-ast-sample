@@ -6,9 +6,6 @@ const MyButton = require('components/my_button');
 
 const AST = require('services/ast');
 
-const is = require('is_js');
-const _ = require('lodash');
-
 class AppComponent extends React.Component {
   constructor(props) {
     super(props);
