@@ -18,8 +18,6 @@ class AppComponent extends React.Component {
       </div>
     `);
 
-    console.log(el);
-
     return (
       <div>
         {el}
