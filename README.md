@@ -1,6 +1,6 @@
 # React AST Sample
 
-Alternate `dangerouslySetInnerHtml`
+Alternate `React.dangerouslySetInnerHtml`
 
 ## client
 
