@@ -1,0 +1,48 @@
+{
+  "name": "react-ast",
+  "version": "0.1.0",
+  "description": "render from string without dangerouslySetInnerHtml",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "React",
+    "dangerouslySetInnerHtml"
+  ],
+  "author": "mosson",
+  "license": "MIT",
+  "devDependencies": {
+    "lodash": "^3.9.1",
+    "is_js": "^0.7.3",
+    "es6-promise": "*",
+    "eventemitter2": "*",
+    "flux": "^2.0.3",
+    "react": "^0.13.3",
+    "react-tools": "^0.13.3",
+    "htmlparser": "*",
+
+    "superagent": "*",
+    "babelify": "^5.0.4",
+    "browserify": "^9.0.3",
+
+    "gulp": "*",
+    "vinyl-source-stream": "*",
+
+    "eslint": "*",
+    "eslint-plugin-jasmine": "*",
+    "eslint-plugin-react": "^2.3.0",
+    "gulp-eslint": "*",
+    "gulp-uglify": "*",
+
+    "console-polyfill": "0.2.1",
+    "es5-shim": "4.1.1",
+
+    "jasmine-core": "*",
+    "jasmine-react-helpers": "kenjiokabe/jasmine-react.git#access-class-directly",
+
+    "karma": "^0.12.31",
+    "karma-jasmine": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-browserify": "^4.0.0"
+  }
+}

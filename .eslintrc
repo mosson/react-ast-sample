@@ -1,0 +1,32 @@
+{
+  "plugins": [
+    "jasmine",
+    "react"
+  ],
+  "globals": {
+    "$": true,
+    "__DEV__": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true,
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "rules": {
+    "complexity": [1, 5],
+    "key-spacing": 0,
+    "no-trailing-spaces": 0,
+    "no-unused-vars": 0,
+    "handle-callback-err": 0,
+    "camelcase": 0,
+    "no-unused-expressions": 0,
+    "curly": 0,
+    "quotes": [0, "double"],
+    "dot-notation": 0,
+    "react/jsx-uses-vars": 1
+  }
+}
