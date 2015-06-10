@@ -4,9 +4,9 @@ const htmlparser = require("htmlparser");
 
 class Parser {
   static parse (html) {
-    const handler = new htmlparser.DefaultHandler();
+    let handler = new htmlparser.DefaultHandler();
 
-    const parser = new htmlparser.Parser(handler);
+    let parser = new htmlparser.Parser(handler);
 
     parser.parseComplete(html);
 
