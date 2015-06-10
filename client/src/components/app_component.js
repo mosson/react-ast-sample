@@ -11,7 +11,16 @@ class AppComponent extends React.Component {
     const el = AST.generate(`
       <div className="article">
         <h1 className="header">This is Header</h1>
-        <p className="body">Lorem <em>Ipsum</em> brabrabra</p>
+        <p className="body">
+          Lorem <em>Ipsum</em> brabrabra
+          <div>
+              <h4>Title</h4>
+              <dl>
+                <dt>def1</dt>
+                <dd>hoge</dd>
+                <dd>fuga</dd>
+          </div>
+        </p>
         <a href="https://example.com" target="_blank">This is link</a>
         <MyButton/>
         <ul>

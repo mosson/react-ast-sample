@@ -40,7 +40,7 @@ var AppComponent = (function (_React$Component) {
   _createClass(AppComponent, {
     render: {
       value: function render() {
-        var el = AST.generate("\n      <div className=\"article\">\n        <h1 className=\"header\">This is Header</h1>\n        <p className=\"body\">Lorem <em>Ipsum</em> brabrabra</p>\n        <a href=\"https://example.com\" target=\"_blank\">This is link</a>\n        <MyButton/>\n        <ul>\n          <li>List 1</li>\n          <li>List 2</li>\n          <li>List 3</li>\n        </ul>\n      </div>\n    ");
+        var el = AST.generate("\n      <div className=\"article\">\n        <h1 className=\"header\">This is Header</h1>\n        <p className=\"body\">\n          Lorem <em>Ipsum</em> brabrabra\n          <div>\n              <h4>Title</h4>\n              <dl>\n                <dt>def1</dt>\n                <dd>hoge</dd>\n                <dd>fuga</dd>\n          </div>\n        </p>\n        <a href=\"https://example.com\" target=\"_blank\">This is link</a>\n        <MyButton/>\n        <ul>\n          <li>List 1</li>\n          <li>List 2</li>\n          <li>List 3</li>\n        </ul>\n      </div>\n    ");
 
         return React.createElement(
           "div",
@@ -284,9 +284,7 @@ var AST = (function () {
         if (!AST.components) AST.components = {};
         if (node.type !== "tag") {
           return;
-        }console.log(AST.components);
-
-        return React.createElement.apply(this, [AST.components[node.name] || node.name, node.attribs || {}].concat(_.compact(_.map(node.children, function (n) {
+        }return React.createElement.apply(this, [AST.components[node.name] || node.name, node.attribs || {}].concat(_.compact(_.map(node.children, function (n) {
           if (n.type === "tag") {
             return _this.parse(n);
           } else {
