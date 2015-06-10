@@ -1,4 +1,6 @@
-# React File Upload Sample
+# React AST Sample
+
+Alternate `dangerouslySetInnerHtml`
 
 ## client
 
@@ -31,5 +33,5 @@ $ bundle install
 ### run
 
 ```
-$ bundle exec ruby server/server.rb
+$ bundle exec rackup -o 0.0.0.0
 ```
