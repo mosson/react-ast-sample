@@ -6,12 +6,12 @@ const _ = require('lodash');
 
 class AST {
   static register(name, component) {
-    if( !AST.components ) AST.components = {};
+    if (!AST.components) AST.components = {};
     AST.components[name] = component;
   }
 
   static unregister(name) {
-    if( !AST.components ) AST.components = {};
+    if (!AST.components) AST.components = {};
     delete AST[name];
   }
 
@@ -25,26 +25,28 @@ class AST {
     return this.parse(rootNode);
   }
 
-  static parse (node) {
-    if( !AST.components ) AST.components = {};
-    if( node.type !== "tag" ) return;
+  static parse(node) {
+    if (!AST.components) AST.components = {};
+    if (node.type !== "tag") return null;
 
-    return React.createElement.apply(
-      this,
-      [
-        AST.components[node.name] || node.name,
-        node.attribs||{}
-      ].concat(
-        _.compact(_.map(node.children, (n) => {
-          if( n.type === "tag" ) {
-            return this.parse(n);
-          } else {
-            if( /\w/.test(n.raw) )
-              return n.raw;
-          }
-        }))
-      )
+    let tag = AST.components[node.name] || node.name;
+
+    let attr = node.attribs || {};
+
+    let children = _.compact(
+      _.map(node.children, (n) => {
+        if (n.type === "tag") {
+          return this.parse(n);
+        } else {
+          if (/\w/.test(n.raw))
+            return n.raw;
+        }
+      })
     );
+
+    let arg = [tag, attr].concat(children);
+
+    return React.createElement.apply(this, arg);
   }
 }
 

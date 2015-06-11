@@ -6,13 +6,15 @@ const MyButton = require('components/my_button');
 
 const AST = require('services/ast');
 
+const DynamicForm = require('components/dynamic_form');
+
+
 class AppComponent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      src: `
-        <div className="article">
+      src: `<div className="article">
           <h1 className="header">This is Header</h1>
           <div className="body">
             Lorem
@@ -40,33 +42,34 @@ class AppComponent extends React.Component {
               <li>List 3</li>
             </ul>
           </div>
-        </div>
-      `
+        </div>`
     };
   }
 
-  clickHdl () {
+  changeHdl (src) {
     this.setState({
-      src: `
-        <div className="article">
-          <h2>Changed</h2>
-          <a href="https://example.com" target="_blank">This is link</a>
-          <div>
-            <MyButton></MyButton>
-          </div>
-        </div>
-      `
+      src: src
     });
   }
 
   render () {
-    let el = AST.generate(this.state.src);
+    let src = this.state.src;
+    this.prevEl = this.el;
+    this.el = AST.generate(src);
+    var el;
+
+    try {
+      // may render?
+      React.renderToString(this.el);
+      el = this.el;
+    } catch (e) {
+      el = this.prevEl;
+    }
 
     return (
-      <div onClick={this.clickHdl.bind(this)}>
-        <div>
-          {el}
-        </div>
+      <div>
+        <div>{el}</div>
+        <DynamicForm src={src} changeHdl={this.changeHdl.bind(this)}/>
       </div>
     );
   }

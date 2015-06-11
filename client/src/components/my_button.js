@@ -5,7 +5,11 @@ const AST = require('services/ast');
 
 class MyButton extends React.Component {
   clickHdl () {
-    window.alert("Yo!");
+    console.log('yo');
+  }
+
+  componentDidMount () {
+    console.log('mounte');
   }
 
   render () {
