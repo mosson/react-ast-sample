@@ -15,6 +15,7 @@ class AppComponent extends React.Component {
         '<h1 className="header">This is Header</h1>',
         '<div className="body">',
         'Lorem',
+        '<Youtube vid="RcDjZWQaONg"/>',
         '<em>Ipsum</em>',
         'brabrabra',
         '<div>',

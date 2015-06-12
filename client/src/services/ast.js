@@ -70,4 +70,7 @@ class AST {
   }
 }
 
+AST.register("MyButton", require('components/my_button'));
+AST.register("Youtube", require('components/youtube'));
+
 module.exports = AST;
