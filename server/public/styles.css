@@ -1,0 +1,54 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css');
+
+html, body, #App {
+  height: 100%;
+}
+
+.container {
+  display: block;
+  height: 100%;
+  zoom: 1;
+}
+
+.container:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.preview {
+  float: left;
+  display :inline;
+  zoom: 1;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.editor {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  left: auto;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.editor textarea {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin 20px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1em;
+  font-family: monospace;
+  font-size: 12px;
+}
