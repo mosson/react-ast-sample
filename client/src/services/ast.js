@@ -29,24 +29,44 @@ class AST {
     if (!AST.components) AST.components = {};
     if (node.type !== "tag") return null;
 
-    let tag = AST.components[node.name] || node.name;
-
-    let attr = node.attribs || {};
-
-    let children = _.compact(
-      _.map(node.children, (n) => {
-        if (n.type === "tag") {
-          return this.parse(n);
-        } else {
-          if (/\w/.test(n.raw))
-            return n.raw;
-        }
-      })
-    );
-
+    let tag = this.parseTag(node);
+    let attr = this.parseAttr(node);
+    let children = this.parseChildren(node);
     let arg = [tag, attr].concat(children);
 
     return React.createElement.apply(this, arg);
+  }
+
+  static parseTag(node) {
+    return AST.components[node.name] || node.name;
+  }
+
+  static parseAttr(node) {
+    let attr = _.clone(node.attribs) || {};
+    if( attr['class'] ) {
+      attr['className'] = attr['class'];
+      delete attr['class'];
+    }
+    return attr;
+  }
+
+  static parseChildren(node) {
+    let children = _.map(
+      node.children,
+      this.parseChildNode.bind(this)
+    );
+
+    return _.compact(children);
+  }
+
+  static parseChildNode(node) {
+    if (node.type === "tag") {
+      return this.parse(node);
+    } else if ( /\S/.test(node.raw) ) {
+      return node.raw;
+    } else {
+      return null;
+    }
   }
 }
 

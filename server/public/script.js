@@ -23,11 +23,8 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== "fun
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
 var React = require("react/addons");
-
 var MyButton = require("components/my_button");
-
 var AST = require("services/ast");
-
 var DynamicForm = require("components/dynamic_form");
 
 var AppComponent = (function (_React$Component) {
@@ -37,7 +34,7 @@ var AppComponent = (function (_React$Component) {
     _get(Object.getPrototypeOf(AppComponent.prototype), "constructor", this).call(this, props);
 
     this.state = {
-      src: "<div className=\"article\">\n          <h1 className=\"header\">This is Header</h1>\n          <div className=\"body\">\n            Lorem\n            <em>Ipsum</em>\n            brabrabra\n            <div>\n                <h4>Title</h4>\n                <dl>\n                  <dt>def1</dt>\n                  <dd>hoge</dd>\n                  <dd>fuga</dd>\n                </dl>\n            </div>\n          </div>\n          <div>\n            <a href=\"https://example.com\" target=\"_blank\">This is link</a>\n          </div>\n          <div>\n            <MyButton></MyButton>\n          </div>\n          <div>\n            <ul>\n              <li>List 1</li>\n              <li>List 2</li>\n              <li>List 3</li>\n            </ul>\n          </div>\n        </div>"
+      src: ["<div className=\"article\">", "<h1 className=\"header\">This is Header</h1>", "<div className=\"body\">", "Lorem", "<em>Ipsum</em>", "brabrabra", "<div>", "<h4>Title</h4>", "<dl>", "<dt>def1</dt>", "<dd>hoge</dd>", "<dd>fuga</dd>", "</dl>", "</div>", "</div>", "<div>", "<a href=\"https://example.com\" target=\"_blank\">This is link</a>", "</div>", "<div>", "<MyButton></MyButton>", "</div>", "<div>", "<ul>", "<li>List 1</li>", "<li>List 2</li>", "<li>List 3</li>", "</ul>", "</div>", "</div>"].join("\n")
     };
   }
 
@@ -46,35 +43,47 @@ var AppComponent = (function (_React$Component) {
   _createClass(AppComponent, {
     changeHdl: {
       value: function changeHdl(src) {
-        this.setState({
-          src: src
-        });
+        this.setState({ src: src });
+      }
+    },
+    resolveElement: {
+      value: function resolveElement() {
+        var element = AST.generate(this.state.src);
+        try {
+          React.renderToString(element);
+        } catch (e) {
+          // invariants causes _currentElement missing loop
+          return null;
+        }
+
+        return element;
       }
     },
     render: {
       value: function render() {
-        var src = this.state.src;
-        this.prevEl = this.el;
-        this.el = AST.generate(src);
-        var el;
+        var element = this.resolveElement();
 
-        try {
-          // may render?
-          React.renderToString(this.el);
-          el = this.el;
-        } catch (e) {
-          el = this.prevEl;
+        if (!element) {
+          element = React.createElement(
+            "div",
+            null,
+            "Syntax Error"
+          );
         }
 
         return React.createElement(
           "div",
-          null,
+          { className: "container" },
           React.createElement(
             "div",
-            null,
-            el
+            { className: "preview" },
+            element
           ),
-          React.createElement(DynamicForm, { src: src, changeHdl: this.changeHdl.bind(this) })
+          React.createElement(
+            "div",
+            { className: "editor" },
+            React.createElement(DynamicForm, { src: this.state.src, changeHdl: this.changeHdl.bind(this) })
+          )
         );
       }
     }
@@ -117,13 +126,8 @@ var DynamicForm = (function (_React$Component) {
     render: {
       value: function render() {
         var src = this.props.src;
-        var style = {
-          width: "100%",
-          height: "500px",
-          boxSizing: "border-box"
-        };
 
-        return React.createElement("textarea", { style: style, onChange: this.changeHdl.bind(this), defaultValue: src });
+        return React.createElement("textarea", { onChange: this.changeHdl.bind(this), defaultValue: src });
       }
     }
   });
@@ -361,26 +365,48 @@ var AST = (function () {
     },
     parse: {
       value: function parse(node) {
-        var _this = this;
-
         if (!AST.components) AST.components = {};
         if (node.type !== "tag") {
           return null;
-        }var tag = AST.components[node.name] || node.name;
-
-        var attr = node.attribs || {};
-
-        var children = _.compact(_.map(node.children, function (n) {
-          if (n.type === "tag") {
-            return _this.parse(n);
-          } else {
-            if (/\w/.test(n.raw)) return n.raw;
-          }
-        }));
-
+        }var tag = this.parseTag(node);
+        var attr = this.parseAttr(node);
+        var children = this.parseChildren(node);
         var arg = [tag, attr].concat(children);
 
         return React.createElement.apply(this, arg);
+      }
+    },
+    parseTag: {
+      value: function parseTag(node) {
+        return AST.components[node.name] || node.name;
+      }
+    },
+    parseAttr: {
+      value: function parseAttr(node) {
+        var attr = _.clone(node.attribs) || {};
+        if (attr["class"]) {
+          attr.className = attr["class"];
+          delete attr["class"];
+        }
+        return attr;
+      }
+    },
+    parseChildren: {
+      value: function parseChildren(node) {
+        var children = _.map(node.children, this.parseChildNode.bind(this));
+
+        return _.compact(children);
+      }
+    },
+    parseChildNode: {
+      value: function parseChildNode(node) {
+        if (node.type === "tag") {
+          return this.parse(node);
+        } else if (/\S/.test(node.raw)) {
+          return node.raw;
+        } else {
+          return null;
+        }
       }
     }
   });
