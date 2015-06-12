@@ -4,7 +4,7 @@ require 'json'
 
 Bundler.require(:default)
 
-set :public, File.dirname(__FILE__) + '/public'
+set :public_dir, File.dirname(__FILE__) + '/public'
 
 get '/' do
   erb :index
